@@ -17,8 +17,10 @@ class GameScene: SKScene {
     let player = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 150, height: 400))
     let enemy = SKSpriteNode(color: SKColor.red, size: CGSize(width: 150, height: 400))
     let menuback = SKSpriteNode(color: SKColor.gray, size: CGSize(width: 800, height: 600))
-    let attackbutton = SKSpriteNode(color: SKColor.red, size: CGSize(width: 180, height: 80))
+    let attackbutton = SKSpriteNode(color: SKColor.red, size: CGSize(width: 220, height: 120))
     let attackbuttontext = SKLabelNode(fontNamed: "Arial")
+    let guardbutton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 220, height: 120))
+    let guardbuttontext = SKLabelNode(fontNamed: "Arial")
     
     private var lastUpdateTime : TimeInterval = 0
     private var label : SKLabelNode?
@@ -49,16 +51,26 @@ class GameScene: SKScene {
         menuback.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.35)
         menuback.zPosition = 0
         addChild(menuback)
-        attackbutton.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.17)
-        attackbuttontext.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.18)
+        attackbutton.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.20)
+        attackbuttontext.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.21)
         attackbutton.zPosition = 1
         attackbuttontext.zPosition = 2
         attackbuttontext.text = "Attack"
-        attackbuttontext.fontSize = 54
+        attackbuttontext.fontSize = 72
         attackbuttontext.fontColor = SKColor.black
         attackbutton.isUserInteractionEnabled = true
         addChild(attackbutton)
         addChild(attackbuttontext)
+        guardbutton.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.35)
+        guardbuttontext.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.36)
+        guardbutton.zPosition = 1
+        guardbuttontext.zPosition = 2
+        guardbuttontext.text = "Guard"
+        guardbuttontext.fontSize = 72
+        guardbuttontext.fontColor = SKColor.black
+        guardbutton.isUserInteractionEnabled = true
+        addChild(guardbutton)
+        addChild(guardbuttontext)
         
         
     }
