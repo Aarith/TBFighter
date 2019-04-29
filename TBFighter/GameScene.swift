@@ -85,9 +85,7 @@ class GameScene: SKScene {
     }
     
     func touchUp(atPoint pos : CGPoint) {
-        if attackbutton.contains(self) {
-            print("Attack")
-        }
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -99,7 +97,14 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        guard let touch = touches.first else { return }
+        let touchLocation = touch.location(in: self)
+        if attackbutton.contains(touchLocation) {
+            print("Attack")
+        }
+        if guardbutton.contains(touchLocation) {
+            print("Guard")
+        }
         
     }
     
