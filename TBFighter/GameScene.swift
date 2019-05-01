@@ -82,11 +82,22 @@ class GameScene: SKScene {
         healthLabel.fontSize = 25
         
         healthLabel.fontColor = SKColor.red
-        healthLabel.text = String(format: "Your Health: 100")
+        healthLabel.text = String(format: "Your HP: %.1f%%", 100.0)
         
-        healthLabel.position = CGPoint(x: frame.size.width * 0.18, y: frame.size.height * 0.35)
+        healthLabel.position = CGPoint(x: frame.size.width * 0.21, y: frame.size.height * 0.35)
         healthLabel.zPosition = 10
         addChild(healthLabel)
+        
+        let enemylabel = SKLabelNode(fontNamed: "Courier")
+        enemylabel.name = "enemyHP"
+        enemylabel.fontSize = 25
+        
+        enemylabel.fontColor = SKColor.red
+        enemylabel.text = String(format: "Enemy HP: %.1f%%", 100.0)
+        
+        enemylabel.position = CGPoint(x: frame.size.width * -0.21, y: frame.size.height * 0.35)
+        enemylabel.zPosition = 10
+        addChild(enemylabel)
     }
     
     func makePlayer() {
