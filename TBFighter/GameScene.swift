@@ -71,7 +71,37 @@ class GameScene: SKScene {
         guardbutton.isUserInteractionEnabled = true
         addChild(guardbutton)
         addChild(guardbuttontext)
+        setupHud()
         
+        
+    }
+    
+    func setupHud() {
+        let healthLabel = SKLabelNode(fontNamed: "Courier")
+        healthLabel.name = "healthHud"
+        healthLabel.fontSize = 25
+        
+        healthLabel.fontColor = SKColor.red
+        healthLabel.text = String(format: "Your Health: 100")
+        
+        healthLabel.position = CGPoint(x: frame.size.width * 0.18, y: frame.size.height * 0.35)
+        healthLabel.zPosition = 10
+        addChild(healthLabel)
+    }
+    
+    func makePlayer() {
+        
+    }
+    
+    func makeEnemy() {
+        
+    }
+    
+    func setupPlayer() {
+        
+    }
+    
+    func setupEnemy() {
         
     }
     
