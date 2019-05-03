@@ -80,7 +80,7 @@ class GameScene: SKScene {
         addChild(guardbuttontext)
         setupHud()
         
-        enemyActions = ["Attack", "Guard"]
+        enemyActions = ["Attack", "Guard", "Attack", "Attack", "Guard"]
         
         
     }
@@ -145,6 +145,11 @@ class GameScene: SKScene {
             print("Attack, did \(damage) damage!")
             enemyHP -= damage
             enemylabel.text = "Enemy HP: \(enemyHP)"
+            if enemyHP <= 0 {
+                let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                let gameOverScene = GameOverScene(size: self.size, won: true)
+                view?.presentScene(gameOverScene, transition: reveal)
+            }
             sleep(1)
             
             if enemychoice == "Attack" {
@@ -152,10 +157,31 @@ class GameScene: SKScene {
                 playerHP -= enemydamage
                 print("You took \(enemydamage) damage!")
                 healthLabel.text = "Your HP: \(playerHP)"
+                if playerHP <= 0 {
+                    let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                    let gameOverScene = GameOverScene(size: self.size, won: false)
+                    self.view?.presentScene(gameOverScene, transition: reveal)
+                }
             }
         }
         if guardbutton.contains(touchLocation) {
             print("Guard")
+            var enemychoice = enemyActions.randomElement()
+            if enemychoice == "Attack" {
+                var enemydamage = Int.random(in: 3 ..< 17)
+                enemydamage /= 2
+                print("You took \(enemydamage) damage!")
+                playerHP -= enemydamage
+                healthLabel.text = "Your HP: \(playerHP)"
+                if playerHP <= 0 {
+                    let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                    let gameOverScene = GameOverScene(size: self.size, won: false)
+                    self.view?.presentScene(gameOverScene, transition: reveal)
+                }
+            }
+            if enemychoice == "Guard" {
+                print("The enemy guards.")
+            }
         }
         
     }
