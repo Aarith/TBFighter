@@ -21,6 +21,13 @@ class GameScene: SKScene {
     let attackbuttontext = SKLabelNode(fontNamed: "Arial")
     let guardbutton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 220, height: 120))
     let guardbuttontext = SKLabelNode(fontNamed: "Arial")
+    let healthLabel = SKLabelNode(fontNamed: "Courier")
+    var playerHP = Int()
+    let enemylabel = SKLabelNode(fontNamed: "Courier")
+    var enemyHP = Int()
+    var enemyActions = [String]()
+
+
     
     private var lastUpdateTime : TimeInterval = 0
     private var label : SKLabelNode?
@@ -73,48 +80,36 @@ class GameScene: SKScene {
         addChild(guardbuttontext)
         setupHud()
         
+        enemyActions = ["Attack", "Guard"]
+        
         
     }
     
     func setupHud() {
-        let healthLabel = SKLabelNode(fontNamed: "Courier")
         healthLabel.name = "healthHud"
         healthLabel.fontSize = 25
+        playerHP = 100
         
         healthLabel.fontColor = SKColor.red
-        healthLabel.text = String(format: "Your HP: %.1f%%", 100.0)
+        healthLabel.text = String(format: "Your HP: \(playerHP)")
         
         healthLabel.position = CGPoint(x: frame.size.width * 0.21, y: frame.size.height * 0.35)
         healthLabel.zPosition = 10
         addChild(healthLabel)
         
-        let enemylabel = SKLabelNode(fontNamed: "Courier")
         enemylabel.name = "enemyHP"
         enemylabel.fontSize = 25
+        enemyHP = 100
         
         enemylabel.fontColor = SKColor.red
-        enemylabel.text = String(format: "Enemy HP: %.1f%%", 100.0)
+        enemylabel.text = String(format: "Enemy HP: \(enemyHP)")
         
         enemylabel.position = CGPoint(x: frame.size.width * -0.21, y: frame.size.height * 0.35)
         enemylabel.zPosition = 10
         addChild(enemylabel)
     }
     
-    func makePlayer() {
-        
-    }
     
-    func makeEnemy() {
-        
-    }
-    
-    func setupPlayer() {
-        
-    }
-    
-    func setupEnemy() {
-        
-    }
     
     
     func touchDown(atPoint pos : CGPoint) {
@@ -141,13 +136,31 @@ class GameScene: SKScene {
         guard let touch = touches.first else { return }
         let touchLocation = touch.location(in: self)
         if attackbutton.contains(touchLocation) {
-            print("Attack")
+            var enemychoice = enemyActions.randomElement()
+            var damage = Int.random(in: 5 ..< 20)
+            if enemychoice == "Guard"{
+                print("Enemy guarded!")
+                damage /= 2
+            }
+            print("Attack, did \(damage) damage!")
+            enemyHP -= damage
+            enemylabel.text = "Enemy HP: \(enemyHP)"
+            sleep(1)
+            
+            if enemychoice == "Attack" {
+                var enemydamage = Int.random(in: 3 ..< 17)
+                playerHP -= enemydamage
+                print("You took \(enemydamage) damage!")
+                healthLabel.text = "Your HP: \(playerHP)"
+            }
         }
         if guardbutton.contains(touchLocation) {
             print("Guard")
         }
         
     }
+    
+    
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
 
