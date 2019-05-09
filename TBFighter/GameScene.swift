@@ -9,8 +9,9 @@
 import SpriteKit
 import GameplayKit
 
+
 class GameScene: SKScene {
-    
+
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
     
@@ -133,6 +134,14 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        var counter = 0
+        var timer = Timer()
+        
+        let moveleft = SKAction.moveBy(x: -180, y:0, duration:0.5)
+        let moveright = SKAction.moveBy(x: 180, y:0, duration:0.5)
+        let playerAtkAnim = SKAction.sequence([moveleft,moveright])
+        let enemyAtkAnim = SKAction.sequence([moveright,moveleft])
         guard let touch = touches.first else { return }
         let touchLocation = touch.location(in: self)
         if attackbutton.contains(touchLocation) {
@@ -142,21 +151,23 @@ class GameScene: SKScene {
                 print("Enemy guarded!")
                 damage /= 2
             }
+            player.run(playerAtkAnim)
             print("Attack, did \(damage) damage!")
             enemyHP -= damage
-            enemylabel.text = "Enemy HP: \(enemyHP)"
+            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateEnemyHP), userInfo: nil, repeats: false)
             if enemyHP <= 0 {
                 let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
                 let gameOverScene = GameOverScene(size: self.size, won: true)
                 view?.presentScene(gameOverScene, transition: reveal)
             }
-            sleep(1)
+            
             
             if enemychoice == "Attack" {
                 var enemydamage = Int.random(in: 3 ..< 17)
+                timer = Timer.scheduledTimer(timeInterval: 1.1, target: self, selector: #selector(enemyattack), userInfo: nil, repeats: false)
                 playerHP -= enemydamage
                 print("You took \(enemydamage) damage!")
-                healthLabel.text = "Your HP: \(playerHP)"
+                timer = Timer.scheduledTimer(timeInterval: 1.6, target: self, selector: #selector(updatePlayerHP), userInfo: nil, repeats: false)
                 if playerHP <= 0 {
                     let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
                     let gameOverScene = GameOverScene(size: self.size, won: false)
@@ -170,9 +181,10 @@ class GameScene: SKScene {
             if enemychoice == "Attack" {
                 var enemydamage = Int.random(in: 3 ..< 17)
                 enemydamage /= 2
+                enemy.run(enemyAtkAnim)
                 print("You took \(enemydamage) damage!")
                 playerHP -= enemydamage
-                healthLabel.text = "Your HP: \(playerHP)"
+                timer = Timer.scheduledTimer(timeInterval: 1.6, target: self, selector: #selector(updatePlayerHP), userInfo: nil, repeats: false)
                 if playerHP <= 0 {
                     let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
                     let gameOverScene = GameOverScene(size: self.size, won: false)
@@ -186,7 +198,23 @@ class GameScene: SKScene {
         
     }
     
+    @objc func enemyattack() {
+        let moveleft = SKAction.moveBy(x: -180, y:0, duration:0.5)
+        let moveright = SKAction.moveBy(x: 180, y:0, duration:0.5)
+        let enemyAtkAnim = SKAction.sequence([moveright,moveleft])
+        enemy.run(enemyAtkAnim)
+        return
+    }
     
+    @objc func updatePlayerHP() {
+        healthLabel.text = "Your HP: \(playerHP)"
+        return
+    }
+    
+    @objc func updateEnemyHP() {
+        enemylabel.text = "Enemy HP: \(enemyHP)"
+        return
+    }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
 
