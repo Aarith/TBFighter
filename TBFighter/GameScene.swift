@@ -39,13 +39,7 @@ class GameScene: SKScene {
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     
-    override func sceneDidLoad() {
-
-        self.lastUpdateTime = 0
-        
-       
-    }
-    
+  
     
     
     override func didMove(to view: SKView) {
