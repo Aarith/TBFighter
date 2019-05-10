@@ -15,8 +15,10 @@ class GameScene: SKScene {
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
     
-    let player = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 150, height: 400))
-    let enemy = SKSpriteNode(color: SKColor.red, size: CGSize(width: 150, height: 400))
+    //let player = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 150, height: 400))
+    let player = SKSpriteNode(imageNamed: "player.png")
+    //let enemy = SKSpriteNode(color: SKColor.red, size: CGSize(width: 150, height: 400))
+    let enemy = SKSpriteNode(imageNamed: "badguy.png")
     let menuback = SKSpriteNode(color: SKColor.gray, size: CGSize(width: 800, height: 600))
     let attackbutton = SKSpriteNode(color: SKColor.red, size: CGSize(width: 220, height: 120))
     let attackbuttontext = SKLabelNode(fontNamed: "Arial")
@@ -27,6 +29,9 @@ class GameScene: SKScene {
     let enemylabel = SKLabelNode(fontNamed: "Courier")
     var enemyHP = Int()
     var enemyActions = [String]()
+    let backMusic = SKAudioNode(fileNamed: "ff7Battle")
+    let hitsound = SKAction.playSoundFileNamed("hitnoise", waitForCompletion: false)
+
 
 
     
@@ -38,27 +43,28 @@ class GameScene: SKScene {
 
         self.lastUpdateTime = 0
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
-        
        
     }
     
+    
+    
     override func didMove(to view: SKView) {
+        backMusic.autoplayLooped = true
+        self.addChild(backMusic)
+       
         backgroundColor = SKColor.black
         player.position = CGPoint(x: frame.size.width * 0.2, y: frame.size.height * 0.08)
         player.zPosition = 10
         addChild(player)
+        
         enemy.position = CGPoint(x: frame.size.width * -0.2, y: frame.size.height * 0.08)
         enemy.zPosition = 10
         addChild(enemy)
+        
         menuback.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.35)
         menuback.zPosition = 0
         addChild(menuback)
+        
         attackbutton.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.20)
         attackbuttontext.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.21)
         attackbutton.zPosition = 1
@@ -69,6 +75,7 @@ class GameScene: SKScene {
         attackbutton.isUserInteractionEnabled = true
         addChild(attackbutton)
         addChild(attackbuttontext)
+        
         guardbutton.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.35)
         guardbuttontext.position = CGPoint(x: frame.size.width * 0, y: frame.size.height * -0.36)
         guardbutton.zPosition = 1
@@ -79,6 +86,7 @@ class GameScene: SKScene {
         guardbutton.isUserInteractionEnabled = true
         addChild(guardbutton)
         addChild(guardbuttontext)
+        
         setupHud()
         
         enemyActions = ["Attack", "Guard", "Attack", "Attack", "Guard"]
@@ -142,8 +150,10 @@ class GameScene: SKScene {
         let moveright = SKAction.moveBy(x: 180, y:0, duration:0.5)
         let playerAtkAnim = SKAction.sequence([moveleft,moveright])
         let enemyAtkAnim = SKAction.sequence([moveright,moveleft])
+        
         guard let touch = touches.first else { return }
         let touchLocation = touch.location(in: self)
+        
         if attackbutton.contains(touchLocation) {
             var enemychoice = enemyActions.randomElement()
             var damage = Int.random(in: 5 ..< 20)
@@ -155,7 +165,9 @@ class GameScene: SKScene {
             print("Attack, did \(damage) damage!")
             enemyHP -= damage
             timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateEnemyHP), userInfo: nil, repeats: false)
+        
             if enemyHP <= 0 {
+                SKAction.wait(forDuration: 3.0)
                 let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
                 let gameOverScene = GameOverScene(size: self.size, won: true)
                 view?.presentScene(gameOverScene, transition: reveal)
@@ -168,7 +180,9 @@ class GameScene: SKScene {
                 playerHP -= enemydamage
                 print("You took \(enemydamage) damage!")
                 timer = Timer.scheduledTimer(timeInterval: 1.6, target: self, selector: #selector(updatePlayerHP), userInfo: nil, repeats: false)
+            
                 if playerHP <= 0 {
+                    SKAction.wait(forDuration: 3.0)
                     let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
                     let gameOverScene = GameOverScene(size: self.size, won: false)
                     self.view?.presentScene(gameOverScene, transition: reveal)
@@ -184,7 +198,7 @@ class GameScene: SKScene {
                 enemy.run(enemyAtkAnim)
                 print("You took \(enemydamage) damage!")
                 playerHP -= enemydamage
-                timer = Timer.scheduledTimer(timeInterval: 1.6, target: self, selector: #selector(updatePlayerHP), userInfo: nil, repeats: false)
+                timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updatePlayerHP), userInfo: nil, repeats: false)
                 if playerHP <= 0 {
                     let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
                     let gameOverScene = GameOverScene(size: self.size, won: false)
@@ -208,11 +222,13 @@ class GameScene: SKScene {
     
     @objc func updatePlayerHP() {
         healthLabel.text = "Your HP: \(playerHP)"
+        run(hitsound)
         return
     }
     
     @objc func updateEnemyHP() {
         enemylabel.text = "Enemy HP: \(enemyHP)"
+        run(hitsound)
         return
     }
     

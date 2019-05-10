@@ -17,6 +17,8 @@
 		2018F985226762E700486281 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2018F983226762E700486281 /* LaunchScreen.storyboard */; };
 		2018F990226762E700486281 /* TBFighterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2018F98F226762E700486281 /* TBFighterTests.swift */; };
 		2018F99B226762E700486281 /* TBFighterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2018F99A226762E700486281 /* TBFighterUITests.swift */; };
+		204AA8682284FF4B00D91F8D /* ff7Battle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 204AA8672284FF4B00D91F8D /* ff7Battle.mp3 */; };
+		204AA86A2285006E00D91F8D /* hitnoise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 204AA8692285006E00D91F8D /* hitnoise.mp3 */; };
 		20AEACF7227C7930000557FC /* GameOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AEACF6227C7930000557FC /* GameOver.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +56,8 @@
 		2018F996226762E700486281 /* TBFighterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TBFighterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2018F99A226762E700486281 /* TBFighterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TBFighterUITests.swift; sourceTree = "<group>"; };
 		2018F99C226762E700486281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		204AA8672284FF4B00D91F8D /* ff7Battle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ff7Battle.mp3; sourceTree = "<group>"; };
+		204AA8692285006E00D91F8D /* hitnoise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hitnoise.mp3; sourceTree = "<group>"; };
 		20AEACF6227C7930000557FC /* GameOver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +109,8 @@
 		2018F973226762E500486281 /* TBFighter */ = {
 			isa = PBXGroup;
 			children = (
+				204AA8672284FF4B00D91F8D /* ff7Battle.mp3 */,
+				204AA8692285006E00D91F8D /* hitnoise.mp3 */,
 				2018F974226762E500486281 /* AppDelegate.swift */,
 				2018F976226762E500486281 /* GameScene.sks */,
 				2018F978226762E500486281 /* Actions.sks */,
@@ -243,9 +249,11 @@
 			files = (
 				2018F980226762E500486281 /* Main.storyboard in Resources */,
 				2018F977226762E500486281 /* GameScene.sks in Resources */,
+				204AA8682284FF4B00D91F8D /* ff7Battle.mp3 in Resources */,
 				2018F982226762E700486281 /* Assets.xcassets in Resources */,
 				2018F985226762E700486281 /* LaunchScreen.storyboard in Resources */,
 				2018F979226762E500486281 /* Actions.sks in Resources */,
+				204AA86A2285006E00D91F8D /* hitnoise.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -29,12 +29,17 @@
 import SpriteKit
 
 class GameOverScene: SKScene {
+    let replaybutton = SKSpriteNode(color: SKColor.gray, size: CGSize(width: 440, height: 150))
+    let replaybuttontext = SKLabelNode(fontNamed: "Arial")
+    
     init(size: CGSize, won:Bool) {
         super.init(size: size)
         
         backgroundColor = SKColor.white
         
-        let message = won ? "Nice" : "#rekt"
+        
+        
+        let message = won ? "You won!" : "#rekt"
         
         let label = SKLabelNode(fontNamed: "Chalkduster")
         label.text = message
@@ -43,19 +48,58 @@ class GameOverScene: SKScene {
         label.position = CGPoint(x: size.width/2, y: size.height/2)
         addChild(label)
         
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: 3.0),
-            SKAction.run() { [weak self] in
-                // 5
-                guard let `self` = self else { return }
-                let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-                let scene = GameScene(size: size)
-                self.view?.presentScene(scene, transition:reveal)
-            }
-            ]))
+//        run(SKAction.sequence([
+//            SKAction.wait(forDuration: 2.0),
+//            SKAction.run() { [weak self] in
+//                // 5
+//                guard let `self` = self else { return }
+//                let reveal = SKTransition.flipVertical(withDuration: 0.5)
+//                let scene = GameScene(size: size)
+//                self.view?.presentScene(scene, transition:reveal)
+//            }
+//            ]))
+        
+    }
+    override func didMove(to view: SKView) {
+        replaybutton.position = CGPoint(x: size.width/2, y: size.height/3)
+        replaybuttontext.position = CGPoint(x: size.width/2, y: size.height/3)
+        replaybutton.zPosition = 1
+        replaybuttontext.zPosition = 2
+        replaybuttontext.text = "Play again?"
+        replaybuttontext.fontSize = 72
+        replaybuttontext.fontColor = SKColor.black
+        replaybutton.isUserInteractionEnabled = true
+        addChild(replaybutton)
+        addChild(replaybuttontext)
     }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func transitionToScene(node: String, sendingScene: SKScene) {
+        
+        //println("Entering transition to scene method with \(node) and \(sendingScene.name)")
+        
+        let transDur = 1.5
+        let transition = SKTransition.fade(with: sendingScene.backgroundColor, duration: transDur)
+        
+        var scene = SKScene()
+        
+        scene = GameScene(size: sendingScene.size)
+        
+        scene.scaleMode = SKSceneScaleMode.aspectFill
+        sendingScene.view!.presentScene(scene, transition: transition)
+        
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let touchLocation = touch.location(in: self)
+        
+        if replaybutton.contains(touchLocation) {
+            transitionToScene(node: "scene", sendingScene: self.scene!)
+        }
+    }
 }
+
